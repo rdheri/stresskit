@@ -9,6 +9,8 @@
 
 StressKit takes an API endpoint, hammers it with configurable concurrent requests, and generates a clean, professional performance report — all from your terminal.
 
+[![StressKit Demo](https://asciinema.org/a/Aeh8BHoBuIaB4Vau.svg)](https://asciinema.org/a/Aeh8BHoBuIaB4Vau)
+
 ---
 
 ## Why StressKit?
@@ -185,114 +187,44 @@ Shows past runs from the local SQLite database at `~/.stresskit/runs.db`.
 
 ---
 
-## Project Structure
+## Architecture
 
 ```
 stresskit/
 ├── pyproject.toml          # Package config, dependencies, CLI entry point
-├── README.md
-├── LICENSE
 ├── stresskit/
 │   ├── __init__.py         # Version
-│   ├── cli.py              # Typer CLI definitions and commands
-│   ├── engine.py           # Async load testing engine (aiohttp)
-│   ├── stats.py            # Statistics computation (percentiles, histograms)
-│   ├── reporter.py         # Rich terminal output rendering
-│   ├── exporter.py         # JSON/CSV export logic
-│   ├── comparator.py       # Report comparison logic
-│   ├── history.py          # SQLite history logging and retrieval
-│   └── models.py           # Pydantic models for all data structures
+│   ├── cli.py              # Typer CLI — command definitions, argument parsing, progress bar
+│   ├── engine.py           # Async load engine — aiohttp workers, connection pooling, timing
+│   ├── stats.py            # Statistics — percentiles, histograms, timeline bucketing
+│   ├── reporter.py         # Rich terminal renderer — tables, charts, sparklines, color-coding
+│   ├── exporter.py         # JSON/CSV export and auto-save to ~/.stresskit/history/
+│   ├── comparator.py       # Report comparison — delta computation, improvement detection
+│   ├── history.py          # SQLite logging — run summaries persisted across sessions
+│   └── models.py           # Pydantic models — RunConfig, RequestResult, RunReport, etc.
 ├── tests/
-│   ├── test_engine.py
-│   ├── test_stats.py
-│   ├── test_comparator.py
-│   └── test_cli.py
-└── .github/workflows/ci.yml
+│   ├── test_engine.py      # Async engine tests with mocked aiohttp sessions
+│   ├── test_stats.py       # Percentile, histogram, timeline, and report builder tests
+│   ├── test_comparator.py  # Delta computation and file comparison tests
+│   └── test_cli.py         # CLI integration tests via typer.testing.CliRunner
+└── .github/workflows/
+    └── ci.yml              # Lint, test, publish on Python 3.10/3.11/3.12
 ```
 
 ---
 
-## Development
+## Tech Stack
 
-```bash
-# Clone and install
-git clone https://github.com/rdheri/stresskit.git
-cd stresskit
-pip install -e ".[dev]"
-
-# Run tests
-pytest tests/ -v
-
-# Run with coverage
-pytest tests/ -v --cov=stresskit --cov-report=term-missing
-
-# Lint
-ruff check stresskit/ tests/
-
-# Type check
-mypy stresskit/
-```
-
----
-
-## Creating a Demo Recording
-
-Since StressKit is a CLI tool, the best way to showcase it is with a terminal recording:
-
-### Option 1: asciinema (recommended)
-
-```bash
-# Install
-pip install asciinema
-
-# Record
-asciinema rec stresskit-demo.cast
-
-# Inside the recording, run:
-stresskit run https://httpbin.org/get -c 20 -n 200
-
-# Stop recording with Ctrl+D, then upload:
-asciinema upload stresskit-demo.cast
-```
-
-Embed in README: `[![asciicast](https://asciinema.org/a/YOUR_ID.svg)](https://asciinema.org/a/YOUR_ID)`
-
-### Option 2: terminalizer (GIF)
-
-```bash
-npm install -g terminalizer
-terminalizer record stresskit-demo
-# Run your commands, then Ctrl+D
-terminalizer render stresskit-demo -o demo.gif
-```
-
----
-
-## Publishing to PyPI
-
-```bash
-# 1. Create accounts at https://pypi.org and https://test.pypi.org
-
-# 2. Build the package
-pip install build twine
-python -m build
-
-# 3. Upload to Test PyPI first
-twine upload --repository testpypi dist/*
-
-# 4. Test the install
-pip install --index-url https://test.pypi.org/simple/ stresskit
-
-# 5. Upload to production PyPI
-twine upload dist/*
-```
-
-Or use the GitHub Actions workflow — just push a version tag:
-
-```bash
-git tag v1.0.0
-git push origin v1.0.0
-```
+| Component | Technology |
+|-----------|-----------|
+| CLI Framework | [Typer](https://typer.tiangolo.com/) |
+| Terminal UI | [Rich](https://rich.readthedocs.io/) |
+| HTTP Engine | [aiohttp](https://docs.aiohttp.org/) + asyncio |
+| Data Models | [Pydantic v2](https://docs.pydantic.dev/) |
+| History Store | SQLite3 |
+| Testing | pytest + pytest-asyncio |
+| Linting | Ruff |
+| CI/CD | GitHub Actions |
 
 ---
 
