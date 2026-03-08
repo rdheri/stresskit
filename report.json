@@ -1,0 +1,95 @@
+{
+  "run_id": "89e561c002e9",
+  "timestamp": "2026-03-08T20:26:51.022556+00:00",
+  "stresskit_version": "1.0.0",
+  "config": {
+    "url": "https://httpbin.org/get",
+    "method": "GET",
+    "concurrency": 10,
+    "total_requests": 100,
+    "duration": null,
+    "headers": {},
+    "body": null,
+    "timeout": 30.0
+  },
+  "total_requests": 100,
+  "successful_requests": 100,
+  "failed_requests": 0,
+  "total_elapsed_s": 0.921,
+  "requests_per_second": 108.58,
+  "successful_rps": 108.58,
+  "total_bytes": 31100,
+  "latency": {
+    "min_ms": 12.665,
+    "max_ms": 586.111,
+    "mean_ms": 67.352,
+    "median_ms": 23.901,
+    "p50_ms": 23.901,
+    "p75_ms": 42.292,
+    "p90_ms": 203.775,
+    "p95_ms": 309.419,
+    "p99_ms": 352.021,
+    "stddev_ms": 98.795
+  },
+  "errors": {
+    "status_codes": {
+      "200": 100
+    },
+    "timeout_count": 0,
+    "connection_error_count": 0,
+    "other_error_count": 0
+  },
+  "timeline": [
+    {
+      "second": 0,
+      "request_count": 100,
+      "success_count": 100,
+      "avg_latency_ms": 67.352
+    }
+  ],
+  "histogram_buckets": [
+    12.665,
+    41.337,
+    70.01,
+    98.682,
+    127.354,
+    156.026,
+    184.699,
+    213.371,
+    242.043,
+    270.716,
+    299.388,
+    328.06,
+    356.733,
+    385.405,
+    414.077,
+    442.75,
+    471.422,
+    500.094,
+    528.766,
+    557.439,
+    586.111
+  ],
+  "histogram_counts": [
+    75,
+    2,
+    1,
+    2,
+    8,
+    0,
+    3,
+    1,
+    1,
+    1,
+    3,
+    2,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    1
+  ]
+}
